@@ -30,6 +30,7 @@ public class ReadMap {
 						maps[i][row][j] = Integer.parseInt(temp[j]);
 					}
 					row++;
+					System.out.println("i:"+i+"row:"+row);
 				}
 				in.close();
 			} catch (FileNotFoundException e) {
