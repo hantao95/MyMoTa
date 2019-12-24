@@ -110,17 +110,17 @@ public class MTConstant {
 	public static final int monsters_image_44 = 44;
 	/**史莱姆人**/
 	public static final int monsters_image_45 = 45;
-	/**大法师**/
+	/**黑法师**/
 	public static final int monsters_image_46 = 46;
-	/**魔王**/
+	/**魔王1**/
 	public static final int monsters_image_47 = 47;
 	/**史莱姆王**/
 	public static final int monsters_image_48 = 48;
-	/**高级法师**/
+	/**塔主1**/
 	public static final int monsters_image_49 = 49;
-	/**高级魔卫**/
+	/**魔王2**/
 	public static final int monsters_image_50 = 50;
-	/**塔主**/
+	/**塔主2**/
 	public static final int monsters_image_51 = 51;
 	//***************道具 tools************//
 	/**蓝宝石**/

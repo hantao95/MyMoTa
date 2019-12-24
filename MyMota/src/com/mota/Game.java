@@ -125,7 +125,6 @@ class startGame extends JFrame {
 		mypanel.setBounds(200, 32, 352, 352);
 		myState = mypanel.new MyState();
 		myState.setBounds(30, 32, 128, 352);
-		//主页面和怪物图鉴切换
 		Container c = getContentPane();
 		c.setLayout(null);
 		c.setBackground(Color.BLACK);
