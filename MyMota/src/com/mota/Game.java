@@ -46,7 +46,7 @@ class startGame extends JFrame {
 	/** 怪物数据	 */
 	Monster monster[] = new Monster[33];
 	/**本层怪物**/
-	Set<Monster> monsterSet = new HashSet<Monster>();
+	List<Monster> monsterList = new ArrayList<Monster>();
 	Toolkit kit = Toolkit.getDefaultToolkit();
 	Image mapimg[] = ReadMap.loadImage(kit);
 	/**上层开关	 */
@@ -57,12 +57,14 @@ class startGame extends JFrame {
 	boolean showMonster = true;
 	/**怪物图鉴状态*/
 	boolean isShow = false;
+	/**页数*/
+	int page = 0;
 
 	/**
 	 * 初始化英雄与怪物属性
 	 */
 	public void init() {
-		hero = new Hero(1, 10000, 10, 10, 0, 0, 10, 0, 0, 1, mapimg[75]);
+		hero = new Hero(1, 10000, 10, 10, 0, 0, 100, 100, 100, 1, mapimg[75]);
 		monster[0] = new Monster("小史莱姆", 50, 20, 1, 1, 1, mapimg[18]);
 		monster[1] = new Monster("红史莱姆", 70, 15, 2, 2, 1, mapimg[19]);
 		monster[2] = new Monster("黑史莱姆", 200, 35, 10, 5, 3, mapimg[20]);
@@ -103,8 +105,8 @@ class startGame extends JFrame {
 	 */
 	public Monster fmonster(int m) {
 		if (m > 18) {
-			if (mapimg[m-1].equals(monster[m - 19].mimage)) {
-				return monster[m - 19];
+			if (mapimg[m].equals(monster[m - 18].mimage)) {
+				return monster[m - 18];
 			}
 		} else {
 			for (int i = 0; i < 33; i++) {
@@ -146,10 +148,31 @@ class startGame extends JFrame {
 		private int my, mx;
 		private int tempmap[][][];
 		/**
-		 * 每层的移动坐标 前为上楼所在坐标，后为下楼所在坐标： 10,5是第一层出生点1,5是下楼时所在位置 [0][0][0]
-		 * [0][0][1]下楼进入第一层时所在位置x,y [0][1][0] [0][1][1]上楼进入第一层时所在位置x,y
+		 * 每层的移动坐标 前为上楼所在坐标，后为下楼所在坐标：
+		 * [0][0][0] [0][0][1]上楼进入第一层时所在位置y,x [0][1][0] [0][1][1]下楼进入第一层时所在位置y,x
 		 */
-		private int location[][][] = { { { 0, 5 }, { 0, 1 } }, { { 10, 4 }, { 0, 1 } } };// 22
+		private int location[][][] = { { { 0, 1 }, { 0, 1 } }, //1
+									  { { 1, 0 }, { 9, 0 } } ,//2
+									  { { 10, 1 }, { 9, 10 } } ,//3
+									  { { 9, 10 }, { 9, 0 } } ,//4
+									  { { 9, 0 }, { 9, 9 } } ,//5
+									  { { 9, 9 }, { 5, 10 } } ,//6
+									  { { 5, 10 }, { 0, 1 } } ,//7
+									  { { 1, 0 }, { 4, 8 } } ,//8
+									  { { 3, 6 }, { 7, 6 } } ,  //9
+									  { { 6, 4 }, { 9, 0 } } ,  //10
+									  { { 10, 1 }, { 10, 9 } } ,  //11
+									  { { 10, 9 }, { 10, 1 } } ,  //12
+									  { { 10, 1 }, { 10, 4 } } ,  //13
+									  { { 9, 5 }, { 0, 5 } } ,  //14
+									  { { 0, 3 }, { 0, 7 } } ,  //15
+									  { { 0, 5 }, { 7, 5 } } ,  //16
+									  { { 8, 5 }, { 10, 1 } } ,  //17
+									  { { 10, 1 }, { 10, 9 } } ,  //18
+									  { { 10, 9 }, { 4, 5 } } ,  //19
+									  { { 4, 5 }, { 6, 5 } } ,  //20
+									  { { 6, 4 }, { 0, 0 } } ,  //21
+		};// 22
 
 		/** 初始化地图大小，英雄起始坐标，所在层数，JF大小，添加键盘监听（keyPressed）		 */
 		public Mypanel() {
@@ -163,11 +186,21 @@ class startGame extends JFrame {
 		
 		//获取本层怪物
 		public void getThisMonster() {
-			monsterSet.clear();
+ 			monsterList.clear();
 			for(int[] child:tempmap[level]) {
 				for(int m:child) {
-					if(m>=MTConstant.monsters_image_19&&m<=MTConstant.monsters_image_51)
-					monsterSet.add(fmonster(m));
+					if(m>=MTConstant.monsters_image_19&&m<=MTConstant.monsters_image_51) {
+						int flag = 0;
+						for(Monster mt:monsterList) {
+							Monster b=fmonster(m);
+							if(mt==b) {
+								flag=1;
+							}
+						}
+						if(flag==0) {
+							monsterList.add(fmonster(m));
+						}
+					}
 				}
 			}
 		}
@@ -204,7 +237,7 @@ class startGame extends JFrame {
 			} else if (isShowSpeaking!=0) {
 				switch(isShowSpeaking) {
 				case 1:Speaking.showSpeaking(gBuffer, string);break;
-				case 2:getThisMonster();Speaking.MonsterInfo(gBuffer,monsterSet);break;
+				case 2:getThisMonster();Speaking.MonsterInfo(gBuffer,monsterList,hero,page);break;
 				case 3:break;
 				case 4:break;
 				}
@@ -250,12 +283,21 @@ class startGame extends JFrame {
 					}else
 						tempmap[level][my][mx]=MTConstant.role_image_76;
 				}
+				
 			}else {
 				if(isShow) {
 					if (e.getKeyCode() == 37) {
 						// 向左翻页
+						if(page>1&&monsterList.size()>6) {
+							page-=1;
+							repaint();
+						}
 					} else if (e.getKeyCode() == 39) {
 						// 向右翻页
+						if(page<monsterList.size()/6+1&&monsterList.size()>6) {
+							page+=1;
+							repaint();
+						}
 					} 
 				}
 			}
@@ -279,6 +321,7 @@ class startGame extends JFrame {
 					if(!isShow) {
 						isShow=true;
 						isShowSpeaking = 2;
+						page = 1;
 						canmove = false;
 						repaint();
 					}
@@ -293,8 +336,7 @@ class startGame extends JFrame {
 				//遇到不可移动地形 啥都不做
 			}else if (tempmap[level][gox][goy] >= 19 && tempmap[level][gox][goy] <= 50) {
 				// 遇到怪
-				if ((hero.attack(fmonster(tempmap[level][gox][goy] - 1)) == -1)
-						|| (hero.attack(fmonster(tempmap[level][gox][goy] - 1)) == 1)) {
+				if ((hero.attack(fmonster(tempmap[level][gox][goy] - 1))>=0)) {
 					moveto(gox, goy, face);
 				} else {
 					canmove = false;

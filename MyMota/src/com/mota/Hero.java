@@ -111,6 +111,11 @@ public class Hero extends Stuff {
 		this.hImage = hImage;
 	}
 
+	/**
+	 * 打不过返回-1，否则返回损失血量
+	 * @param m
+	 * @return
+	 */
 	public int attack(Monster m) {
 		// 有效伤害值
 		int h_harm = atk - m.def;
@@ -121,26 +126,58 @@ public class Hero extends Stuff {
 		if (h_harm>0) {
 			//回合数
 			Rounds = (int)Math.ceil((double)m.hp/h_harm);
+			Rounds -=1;//英雄总是先手，所以回合数减1
 		}else {
 			//无法击穿护甲
-			return 0;
+			return -1;
 		}
 		if (h_harm > 0 && m_harm <= 0) {
 			//碾压怪物方法
 			money = money + m.money;
 			exp = exp + m.exp;
-			return 1;
+			return 0;
 		}  else if(Rounds*m_harm>=hp){
 			//打不过
-			return 0;
+			return -1;
 		} else {
 			//战斗方法
-			m.hp = 0;
 			hp=hp-(Rounds*m_harm);
 			money = money + m.money;
 			exp = exp + m.exp;
 		}
-		return -1;
+		return Rounds*m_harm;
+	}
+	
+	/**
+	 * 打不过返回-1，否则返回损失血量
+	 * @param m
+	 * @return
+	 */
+	public int attackCheck(Monster m) {
+		// 有效伤害值
+		int h_harm = atk - m.def;
+		// 承受伤害值
+		int m_harm = m.atk - def;
+		//回合数
+		int Rounds = 0;
+		if (h_harm>0) {
+			//回合数
+			Rounds = (int)Math.ceil((double)m.hp/h_harm);
+			Rounds -=1;//英雄总是先手，所以回合数减1
+		}else {
+			//无法击穿护甲
+			return -1;
+		}
+		if (h_harm > 0 && m_harm <= 0) {
+			//碾压怪物方法
+			return 0;
+		}  else if(Rounds*m_harm>=hp){
+			//打不过
+			return -1;
+		} else {
+			//战斗方法
+		}
+		return Rounds*m_harm;
 	}
 
 }
