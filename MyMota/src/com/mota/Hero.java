@@ -180,4 +180,5 @@ public class Hero extends Stuff {
 		return Rounds*m_harm;
 	}
 
+	
 }

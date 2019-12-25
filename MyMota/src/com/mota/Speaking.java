@@ -35,13 +35,71 @@ public class Speaking {
 		drawOffScreen.setColor(Color.BLACK);
 	}
 	
-	public static void showshop(Graphics drawOffScreen,int type) {
+	/**
+	 * 商店
+	 * 1.金币
+	 * 2.经验
+	 * 3.钥匙
+	 * @param drawOffScreen
+	 * @param type
+	 */
+	public static void showshop(Graphics drawOffScreen,int type,int level,int choose) {
+		String[] strs = new String[4];
 		switch(type) {
-		case 1:break;
-		case 2:break;
-		case 3:break;
-		case 4:break;
+		case MTConstant.shopType_1:if(level==3) {
+					strs[0]="25金币获得以下提升";
+					strs[1]="800HP";
+					strs[2]="4ATK";
+					strs[3]="4DEF";
+				}else {
+					strs[0]="100金币获得以下提升";
+					strs[1]="4000HP";
+					strs[2]="20ATK";
+					strs[3]="20DEF";	
+				}
+				break;
+		case MTConstant.shopType_2:if(level==5) {
+					strs[0]="消耗经验可以获得以下提升";
+					strs[1]="level+1(100)";
+					strs[2]="5ATK(30EXP)";
+					strs[3]="5DEF(30EXP)";
+				}else {
+					strs[0]="消耗经验可以获得以下提升";
+					strs[1]="level+3(270)";
+					strs[2]="17ATK(95EXP)";
+					strs[3]="17DEF(95EXP)";
+				}
+				break;
+		case MTConstant.shopType_3:if(level==5) {
+					strs[0]="你可以用金币购买钥匙";
+					strs[1]="黄钥匙：10GOLD";
+					strs[2]="蓝钥匙：50GOLD";
+					strs[3]="红钥匙：100GOLD";
+				}else {
+					strs[0]="多余的钥匙可以出售";
+					strs[1]="黄钥匙：7GOLD";
+					strs[2]="蓝钥匙：35GOLD";
+					strs[3]="红钥匙：70GOLD";
+				}
+		break;
 		}
+		strs[choose]="→"+strs[choose];
+		int x=32*2;
+		int y=32*3;
+		//背景
+		drawOffScreen.setColor(Color.BLACK);
+		drawOffScreen.fillRect(x, y, 32*7, 32*5);
+		//边框
+		drawOffScreen.setColor(Color.blue);
+		drawOffScreen.drawRoundRect(x, y, 32*7, 32*5, 10, 10);
+		y+=10;
+		drawOffScreen.setColor(Color.WHITE);
+		drawOffScreen.setFont(new Font("TimesRoman", Font.BOLD, 15));//字体设置
+		for(String str:strs) {
+			drawOffScreen.drawString(str, x+15, y+=20);
+		}
+		drawOffScreen.drawString("退出：space 确定：enter", 84, y+=30);
+		drawOffScreen.setColor(Color.BLACK);
 	}
 	
 	/**
@@ -49,14 +107,13 @@ public class Speaking {
 	 * @param drawOffScreen
 	 * @param string
 	 */
-	public static int MonsterInfo(Graphics drawOffScreen,List<Monster> monsterList,Hero hero,int page) {
+	public static void MonsterInfo(Graphics drawOffScreen,List<Monster> monsterList,Hero hero,int page) {
 		//背景
 		drawOffScreen.setColor(Color.BLACK);
 		drawOffScreen.fillRect(0, 0, 352, 352);
 		//边框
 		drawOffScreen.setColor(Color.RED);
 		drawOffScreen.drawRoundRect(0, 0, 342, 342, 10, 10);
-		int time = 0;
 		int x=32;
 		int y=-40;
 		for(int t=(page-1)*6;t<((monsterList.size()>(page*6))?page*6:monsterList.size());t++) {	
@@ -103,8 +160,9 @@ public class Speaking {
 		drawOffScreen.setColor(Color.WHITE);
 		drawOffScreen.setFont(new Font("TimesRoman", Font.BOLD, 15));//字体设置
 		drawOffScreen.drawString("---space---", 115, 300);
-		drawOffScreen.drawString("<<  >>", 280, 320);
+		drawOffScreen.drawString("←  →", 280, 320);
 		drawOffScreen.setColor(Color.BLACK);
-		return time;
 	}
+
+
 }

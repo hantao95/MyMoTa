@@ -49,11 +49,11 @@ public class MTConstant {
 	public static final int NPC_image_17 = 17;
 	/**商店右**/
 	public static final int NPC_image_18 = 18;
-	/**商店中**/
+	/**商店中 不使用**/
 	public static final int NPC_image_79 = 79;
-	/**商店左**/
+	/**商店左 不使用**/
 	public static final int NPC_image_80 = 80;
-	/**商店右**/
+	/**商店右 不使用**/
 	public static final int NPC_image_81 = 81;
 	//***************怪物 monsters************//
 	/**绿史莱姆**/
@@ -141,7 +141,7 @@ public class MTConstant {
 	public static final int tools_image_59 = 59;
 	/**剑1**/
 	public static final int tools_image_60 = 60;
-	/**宝箱**/
+	/**钥匙箱**/
 	public static final int tools_image_61 = 61;
 	/**盾1**/
 	public static final int tools_image_62 = 62;
@@ -151,7 +151,7 @@ public class MTConstant {
 	public static final int tools_image_64 = 64;
 	/**十字架**/
 	public static final int tools_image_65 = 65;
-	/**纹章**/
+	/**飞行器**/
 	public static final int tools_image_66 = 66;
 	/**剑2**/
 	public static final int tools_image_67 = 67;
@@ -182,5 +182,24 @@ public class MTConstant {
 	/**不可移动地形**/
 	public static final Set<Integer> DismoveSet = new HashSet<>(Arrays.asList(new Integer[]{maparea_image_1,maparea_image_2,maparea_image_6,maparea_image_9,NPC_image_80,NPC_image_81,mapare_image_82}));
 
+	//*******商店类型 shoptype******//
+	/**没有商店**/
+	public static final int shopType_0= 0;
+	/**金币商店**/
+	public static final int shopType_1= 1;
+	/**经验商店**/
+	public static final int shopType_2= 2;
+	/**钥匙商店**/
+	public static final int shopType_3= 3;
+	
+	//*******对话框类型 isShowSpeaking******//
+	/**不展示对话框**/
+	public static final int isShowSpeaking_0=0;
+	/**普通对话框**/
+	public static final int isShowSpeaking_1=1;
+	/**怪物图鉴对话框**/
+	public static final int isShowSpeaking_2=2;
+	/**商店对话框**/
+	public static final int isShowSpeaking_3=3;
 	
 }
